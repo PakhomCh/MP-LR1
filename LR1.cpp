@@ -7,22 +7,22 @@ using namespace std;
 
 double F(double x)
 {
-    return  3 * pow(x, 4) + 8 * pow(x, 3) + 6 * pow(x, 2) - 11;
+    return  3 * pow(x, 4) - 8 * pow(x, 3) - 18 * pow(x, 2) + 2;
 }
 
 double deriF(double x)
 {
-    return 12 * pow(x, 3) + 24 * pow(x, 2) + 12 * x;
+    return 12 * pow(x, 3) - 24 * pow(x, 2) - 36 * x;
 }
 
 double S(double x)
 {
-    return log10(2 + x) + 2 * x - 3;
+    return tan(0.55 * x + 0.1) - pow(x, 2);
 }
 
 double deriS(double x)
 {
-    return 1 / log(10) / (2 + x) + 2;
+    return -2 * x + 0.55 / (pow(cos(0.1 + 0.55 * x), 2));
 }
 
 void newtonRaphsonF(double x)
@@ -34,7 +34,7 @@ void newtonRaphsonF(double x)
         x = x - h;
         cout << "Root: " << x << endl;
     }
-    
+    cout << endl;
 }
 
 void newtonRaphsonS(double x)
@@ -46,22 +46,38 @@ void newtonRaphsonS(double x)
         x = x - h;
         cout << "Root: " << x << endl;
     }
+    cout << endl;
 }
 
 int main()
 {
-    cout << "Expected roots: -2.1 and 0.85" << endl;
+    cout << "Expected roots: -1.3, -0.3, 0.3 and 4.1" << endl;
 
-    double inroot = -2.1;
+    double inroot = -1.3;
     newtonRaphsonF(inroot);
 
-    inroot = 0.85;
+    inroot = -0.3;
+    newtonRaphsonF(inroot);
+
+    inroot = 0.3;
+    newtonRaphsonF(inroot);
+
+    inroot = 4.1;
     newtonRaphsonF(inroot);
 
     cout << endl;
-    cout << "Expected roots: 1.24" << endl;
+    cout << "Expected roots: -3.2, -0.1, 0.7, 2.3" << endl;
 
-    inroot = 0.85;
+    inroot = -3.2;
+    newtonRaphsonS(inroot);
+
+    inroot = -0.1;
+    newtonRaphsonS(inroot);
+
+    inroot = 0.7;
+    newtonRaphsonS(inroot);
+
+    inroot = 2.3;
     newtonRaphsonS(inroot);
 
     return 0;
