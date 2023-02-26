@@ -15,6 +15,7 @@ double deriF(double x)
     return 12 * pow(x, 3) - 24 * pow(x, 2) - 36 * x;
 }
 
+double G(double x)
 double S(double x)
 {
     return tan(0.55 * x + 0.1) - pow(x, 2);
