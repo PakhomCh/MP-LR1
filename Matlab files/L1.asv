@@ -1,0 +1,19 @@
+clc
+
+disp('Expected roots: -2.1 and 0.85')
+root1 = fzero('3 * x^4 + 8 * x^3 + 6* x^2 - 11', [-3 -2]);
+root2 = fzero('3 * x^4 + 8 * x^3 + 6* x^2 - 11', [0 1]);
+disp('Found roots:')
+disp([root1, root2])
+
+disp('Expected roots: 1.24')
+root1 = fzero('log10(2 + x) + 2 * x - 3', [1 2]);
+disp('Found roots:')
+disp(root1)
+
+disp('Expected roots: {-0.4, 1.49} and {1.}')
+fun = @root2d;
+x0 = [0, 0];
+root1 = fsolve(fun, x0);
+disp('Found roots:')
+disp(root1)
