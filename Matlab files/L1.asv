@@ -11,7 +11,7 @@ root1 = fzero('log10(2 + x) + 2 * x - 3', [1 2]);
 disp('Found roots:')
 disp(root1)
 
-disp('Expected roots: {-0.4, 1.49} and {1.}')
+disp('Expected roots: {-0.4, 1.49}')
 fun = @root2d;
 x0 = [0, 0];
 root1 = fsolve(fun, x0);
