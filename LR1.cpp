@@ -7,37 +7,37 @@ using namespace std;
 
 double F(double x)
 {
-    return  3 * pow(x, 4) - 8 * pow(x, 3) - 18 * pow(x, 2) + 2;
+    return  3 * pow(x, 4) + 8 * pow(x, 3) + 6 * pow(x, 2) - 11;
 }
 
 double deriF(double x)
 {
-    return 12 * pow(x, 3) - 24 * pow(x, 2) - 36 * x;
+    return 12 * pow(x, 3) + 24 * pow(x, 2) + 12 * x;
 }
 
 double G(double x)
 {
-    return 1 / sqrt(-1.5 * pow(x, 2) + 4 * x + 9);
+    return sqrt(11) / sqrt(3 * pow(x, 2) + 8 * x + 6);
 }
 
 double S(double x)
 {
-    return tan(0.55 * x + 0.1) - pow(x, 2);
+    return log10(x + 2) + 2 * x - 3;
 }
 
 double deriS(double x)
 {
-    return -2 * x + 0.55 / (pow(cos(0.1 + 0.55 * x), 2));
+    return 2 + 1 / (x * log(10) + log(100));
 }
 
 double T(double x)
 {
-    return tan(0.55 * x + 0.1) / x;
+    return 1.5 - log10(sqrt(x + 2));
 }
 
 pair<double, double> P(double x, double y)
 {
-    return { sin(x + y) - 0.2, sqrt(1 - pow(x, 2))};
+    return { -1 * log(y), sqrt(sqrt(5 - pow(x, 4)))};
 }
 
 void newtonRaphsonF(double x)
@@ -107,191 +107,110 @@ void fixPointIterationP(double x, double y)
     cout << endl;
 }
 
-void mullerF(double a, double b, double c)
+void wegsteinF(double x)
 {
-    int i;
-    double res;
-
-    for (i = 0;; ++i)
+    bool flag = true;
+    int itr = 0, q = 0.25;
+    double x1;
+    while (flag && (itr < MAX_ITERATIONS))
     {
-        // Calculating various constants required
-        // to calculate x3
-        double f1 = F(a);
-        double f2 = F(b);
-        double f3 = F(c);
-        double d1 = f1 - f3;
-        double d2 = f2 - f3;
-        double h1 = a - c;
-        double h2 = b - c;
-        double a0 = f3;
-        double a1 = (((d2 * pow(h1, 2)) - (d1 * pow(h2, 2))) / ((h1 * h2) * (h1 - h2)));
-        double a2 = (((d1 * h2) - (d2 * h1)) / ((h1 * h2) * (h1 - h2)));
-        double x = ((-2 * a0) / (a1 + abs(sqrt(a1 * a1 - 4 * a0 * a2))));
-        double y = ((-2 * a0) / (a1 - abs(sqrt(a1 * a1 - 4 * a0 * a2))));
+        itr ++;
 
-        // Taking the root which is closer to x2
-        if (x >= y)
-            res = x + c;
-        else
-            res = y + c;
+        x1 = G(x); // calculating the fixed point new x
+        x1 = q * x + (1 - q) * x1;  // Applying Wegstein's method
 
-        // checking for resemblance of x3 with x2 till
-        // two decimal places
-        double m = res * 100;
-        double n = c * 100;
-        m = floor(m);
-        n = floor(n);
-        if (m == n)
-            break;
-        a = b;
-        b = c;
-        c = res;
-        cout << "Root: " << res << endl;
-        if (i > MAX_ITERATIONS)
-            break;
+        if (abs(x1 - x) < EPSILON) // Terminates if the error is less than tolerance
+            flag = false;
+
+        x = x1;
+        if (itr > MAX_ITERATIONS) // Termination if number of iterations exceeds the limit
+            flag = false;
+
+        cout << "Root: " << x << endl;
     }
-
-    if (i > MAX_ITERATIONS)
+    if (itr > MAX_ITERATIONS)
         cout << "Root cannot be found using Muller's method" << endl;
     else
-        cout << "Root: " << res << endl;
+        cout << "Root: " << x << endl;
     cout << endl;
 }
 
-void mullerS(double a, double b, double c)
+void wegsteinS(double x)
 {
-    int i;
-    double res;
-
-    for (i = 0;; ++i)
+    bool flag = true;
+    int itr = 0, q = 0.25;
+    double x1;
+    while (flag && itr < MAX_ITERATIONS)
     {
-        // Calculating various constants required
-        // to calculate x3
-        double f1 = S(a);
-        double f2 = S(b);
-        double f3 = S(c);
-        double d1 = f1 - f3;
-        double d2 = f2 - f3;
-        double h1 = a - c;
-        double h2 = b - c;
-        double a0 = f3;
-        double a1 = (((d2 * pow(h1, 2)) - (d1 * pow(h2, 2))) / ((h1 * h2) * (h1 - h2)));
-        double a2 = (((d1 * h2) - (d2 * h1)) / ((h1 * h2) * (h1 - h2)));
-        double x = ((-2 * a0) / (a1 + abs(sqrt(a1 * a1 - 4 * a0 * a2))));
-        double y = ((-2 * a0) / (a1 - abs(sqrt(a1 * a1 - 4 * a0 * a2))));
+        itr++;
 
-        // Taking the root which is closer to x2
-        if (x >= y)
-            res = x + c;
-        else
-            res = y + c;
+        x1 = T(x); // calculating the fixed point new x
+        x1 = q * x + (1 - q) * x1;  // Applying Wegstein's method
 
-        // checking for resemblance of x3 with x2 till
-        // two decimal places
-        double m = res * 100;
-        double n = c * 100;
-        m = floor(m);
-        n = floor(n);
-        if (m == n)
-            break;
-        a = b;
-        b = c;
-        c = res;
-        cout << "Root: " << res << endl;
-        if (i > MAX_ITERATIONS)
-            break;
-        
+        if (abs(x1 - x) < EPSILON) // Terminates if the error is less than tolerance
+            flag = false;
+
+        x = x1;
+        if (itr > MAX_ITERATIONS) // Termination if number of iterations exceeds the limit
+            flag = false;
+
+        cout << "Root: " << x << endl;
     }
-    if (i > MAX_ITERATIONS)
+    if (itr > MAX_ITERATIONS)
         cout << "Root cannot be found using Muller's method" << endl;
     else
-        cout << "Root: " << res << endl;
+        cout << "Root: " << x << endl;
     cout << endl;
 }
 
 int main()
 {
     cout << "**************** PART 1 ****************" << endl;
-    cout << "Expected roots: -1.3, -0.3, 0.3 and 4.1" << endl;
+    cout << "Expected roots: -2.1 and 0.85" << endl;
 
-    double inroot = -1.3;
+    double inroot = -2.1;
     newtonRaphsonF(inroot);
 
-    inroot = -0.3;
-    newtonRaphsonF(inroot);
-
-    inroot = 0.3;
-    newtonRaphsonF(inroot);
-
-    inroot = 4.1;
+    inroot = 0.85;
     newtonRaphsonF(inroot);
 
     cout << endl;
-    cout << "Expected roots: -3.2, -0.1, 0.7, 2.3" << endl;
+    cout << "Expected roots: 1.24" << endl;
 
-    inroot = -3.2;
-    newtonRaphsonS(inroot);
-
-    inroot = -0.1;
-    newtonRaphsonS(inroot);
-
-    inroot = 0.7;
-    newtonRaphsonS(inroot);
-
-    inroot = 2.3;
+    inroot = 1.2;
     newtonRaphsonS(inroot);
 
     cout << "**************** PART 2 ****************" << endl;
-    cout << "Expected roots: -1.3, -0.3, 0.3 and 4.1" << endl;
+    cout << "Expected roots: -2.1 and 0.85" << endl;
 
-    inroot = -1.3;
+    inroot = -2.1;
     fixPointIterationF(inroot);
 
-    inroot = -0.3;
-    fixPointIterationF(inroot);
-
-    inroot = 0.3;
-    fixPointIterationF(inroot);
-
-    inroot = 4.1;
+    inroot = -0.85;
     fixPointIterationF(inroot);
 
     cout << endl;
-    cout << "Expected roots: -3.2, -0.1, 0.7, 2.3" << endl;
+    cout << "Expected roots: 1.24" << endl;
 
-    inroot = -3.2;
-    fixPointIterationS(inroot);
-
-    inroot = -0.1;
-    fixPointIterationS(inroot);
-
-    inroot = 0.7;
-    fixPointIterationS(inroot);
-
-    inroot = 2.3;
+    inroot = 1.24;
     fixPointIterationS(inroot);
 
     cout << "**************** PART 3 ****************" << endl;
-    cout << "Expected roots: -1.3, -0.3, 0.3 and 4.1" << endl;
+    cout << "Expected roots: -2.1 and 0.85" << endl;
 
-    mullerF(-3, -2, -1.3);
-    mullerF(-2, -1.3, -0.3);
-    mullerF(-1.3, -0.3, 0.3);
-    mullerF(-0.3, 0.3, 4.1);
+    wegsteinF(-2.1);
+    wegsteinF(0.85);
 
     cout << endl;
-    cout << "Expected roots: -3.2, -0.1, 0.7, 2.3" << endl;
-    mullerS(-5, -4, -3.2);
-    mullerS(-4, -3.2, -0.1);
-    mullerS(-3.2, -0.1, 0.7);
-    mullerS(-0.1, 0.7, 2.3);
+    cout << "Expected roots: 1.24" << endl;
+    wegsteinS(1.24);
 
     cout << "**************** PART 4 ****************" << endl;
-    cout << "Expected roots: {-0.99, 0.07} and {0.78, 0.61}" << endl;
+    cout << "Expected roots: {-0.54, 1.72} and {1.73, 0.17}" << endl;
 
-    fixPointIterationP(-0.1, 0);
+    fixPointIterationP(-1, 1);
 
-    fixPointIterationP(0.8, 0.6);
+    fixPointIterationP(1.7, 0.2);
 
     return 0;
 }
